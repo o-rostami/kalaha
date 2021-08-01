@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Trebuchet MS", sans-serif;
+    box-sizing: border-box;
+}
+#ctrl {
+    width: 300px;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 30px;
+    right: calc(50vw - 150px);
+}
+#ctrl button {
+    width: 100%;
+    margin: 5px 0;
+    background-color: black;
+    color: white;
+    line-height: 37px;
+    font-size: 16px;
+    outline: none !important;
+    border: none;
+    cursor: pointer;
+    transition: all ease-out 0.3s;
+}
+#ctrl button:hover {
+    background-color: #277e2b;
+}
+main {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    margin: 0 auto;
+    padding: 15px;
+}
+#mancala {
+    margin: auto auto;
+    height: 300px;
+    width: 900px;
+    background-color: #f1f1f1;
+    border: 5px solid #f0f0f0;
+    border-radius: 25px;
+    padding: 5px;
+}
+.house {
+    width: 20%;
+}
+#pits {
+    float: left;
+    width: 60%;
+    height: 100%;
+}
+.pits-row {
+    height: 50%;
+}
+.pit {
+    width: calc(100% / 6);
+}
+.pit, .house {
+    padding: 5px;
+    float: left;
+    height: 100%;
+}
+.cell {
+    background-color: #d9d9d9;
+    border: 2px solid #d1d1d1;
+    position: relative;
+    border-radius: 15px;
+    height: 100%;
+    padding: 2px;
+    transition: all ease-out 0.3s;
+}
+.player-two .cell {
+    background-color: #cccccc;
+}
+#pits .cell:hover {
+    border-color: #9f9f9f;
+    cursor: pointer;
+}
+.cell .state {
+    width: 24px;
+    line-height: 20px;
+    color: #f3f3f2;
+    height: 20px;
+    display: block;
+    position: absolute;
+    bottom: 2px;
+    right: calc(50% - 12px);
+    border-radius: 4px;
+    font-size: 11px;
+    text-align: center;
+}
+.stone {
+    margin: 2px;
+    opacity: 0;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #737373;
+    border-radius: 5px;
+    transition: all ease-in 0.3s;
+}
+.house.player-one .user-name, .house.player-two .user-name  {
+    opacity: 0;
+    display: block;
+    position: absolute;
+    color: #f3f3f2;
+    line-height: 30px;
+    padding: 0 10px;
+    bottom: -57px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    border-radius: 5px;
+    transition: all ease-in 0.3s;
+}
+.player-two .state, .house.player-two .stone, .house.player-two .user-name {
+    background-color: #9a90b9;
+}
+.player-one .state, .house.player-one .stone, .house.player-one .user-name {
+    background-color: #92bc88;
+}

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Document</title>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet">
+<!--    <link href="css/style.css" rel="stylesheet">-->
+    <link href="main.css" rel="stylesheet">
+    <!--    libs for stomp and sockjs-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <!--    end libs for stomp and sockjs-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+<main>
+    <div id="mancala">
+        <div class="house player-one">
+            <div id="7" class="cell">
+                <span class="user-name"></span>
+                <span class="state"></span>
+
+            </div>
+        </div>
+        <div id="pits">
+            <div class="pits-row player-one">
+                <div class="pit">
+                    <div id="6" class="cell">
+                        <span class="state"></span>
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="5" class="cell">
+                        <span class="state"></span>
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="4" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="3" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="2" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="1" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="pits-row player-two">
+                <div class="pit">
+                    <div id="8" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="9" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="10" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="11" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="12" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+                <div class="pit">
+                    <div id="13" class="cell">
+                        <span class="state"></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="house player-two">
+            <div id="14" class="cell">
+                <span class="user-name"></span>
+                <span class="state"></span>
+
+            </div>
+        </div>
+    </div>
+    <div id="ctrl">
+        <button type="button" onclick="newGame()">New Game</button>
+        <button type="button" onclick="connectGame()">Connect Game</button>
+        <button type="button" onclick="randomGame()">Random Game</button>
+    </div>
+</main>
+
+<!--<body>
+<div class="text-center" id="box">
+    <header>
+        <h1>Play Tic Tac Toe</h1>
+    </header>
+    <input id="login" placeholder="Place a login here">
+    <button onclick="create_game()">Create a new game</button>
+    <button onclick="connectToRandom()">Connect to random game</button>
+    <input id="game_id" placeholder="Paste game id">
+    <button>Connect by game id</button>
+    <div id="message"></div>
+    <ul id="gameBoard">
+        <li class="tic" id="0_0"></li>
+        <li class="tic" id="0_1"></li>
+        <li class="tic" id="0_2"></li>
+        <li class="tic" id="1_0"></li>
+        <li class="tic" id="1_1"></li>
+        <li class="tic" id="1_2"></li>
+        <li class="tic" id="2_0"></li>
+        <li class="tic" id="2_1"></li>
+        <li class="tic" id="2_2"></li>
+    </ul>
+    <div class="clearfix"></div>
+    <footer>
+        <span>You are playing with <span id="oponentLogin"></span></span>
+    </footer>
+</div>
+<script src="js/script.js"></script>
+<script src="js/socket_js.js"></script>
+</body>-->
+<script src="main.js"></script>
+</body>
+</html>
