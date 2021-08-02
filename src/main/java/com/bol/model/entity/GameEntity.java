@@ -34,7 +34,7 @@ public class GameEntity extends BaseEntity<Long> {
     private BoardEntity board;
 
     @Column(name = "WINNER")
-    private Long winner;
+    private String winner;
 
     @Column(name = "STATUS")
     @Convert(converter = GameStatus.GameStatusConverter.class)

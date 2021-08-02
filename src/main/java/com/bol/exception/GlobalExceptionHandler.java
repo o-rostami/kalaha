@@ -80,7 +80,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .type(MethodArgumentNotValidException.class.getSimpleName())
                         .status(status)
                         .instance(((ServletWebRequest) request).getRequest().getRequestURI())
-                        .exceptionResponsDtos(errors)
                         .build()
                 , HttpStatus.BAD_REQUEST);
     }

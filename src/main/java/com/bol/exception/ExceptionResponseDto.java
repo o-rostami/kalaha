@@ -15,5 +15,4 @@ public class ExceptionResponseDto {
     private HttpStatus status;
     private String detail;
     private String instance;
-    private List<ExceptionResponseDto> exceptionResponsDtos;
 }

@@ -106,23 +106,12 @@ public class GameServiceImpl implements GameService {
     @Transactional
     public GameEntity gamePlay(Long gameId, Integer pitId) {
         GameEntity game = getGameById(gameId);
-        // validate the moving condition based on the pit id
-        sowValidation(game, pitId);
 
-        int stones = boardService.getStones(game.getBoard(), pitId);
-        boardService.setStones(game.getBoard(), pitId, MancalaConstants.emptyStone.getValue());
+        sowValidation(game, pitId);
 
         // keep the pit index, used for sowing the stones in right pits
         game.setCurrentPitIndex(pitId);
-
-        // simply sow all stones except the last one
-        for (int i = 0; i < stones - 1; i++) {
-            sowRight(game, false);
-        }
-
-        // simply sow the last stone
-        sowRight(game, true);
-
+        sow(game);
 
         // we switch the turn if the last sow was not on any of pit houses (left or right)
         if (!game.getCurrentPitIndex().equals(MancalaConstants.rightPitHouseId.getValue())
@@ -133,6 +122,7 @@ public class GameServiceImpl implements GameService {
         return game;
     }
 
+    // validate the moving condition based on the pit id
     private void sowValidation(GameEntity game, Integer pitId) {
 
         if (game.getStatus().equals(GameStatus.FINISHED)) {
@@ -159,44 +149,84 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    //     sow the game one pit to the right
-    private void sowRight(GameEntity game, Boolean lastStone) {
+    private void sow(GameEntity game) {
+        int stones = boardService.getStones(game.getBoard(), game.getCurrentPitIndex());
+        boardService.setStones(game.getBoard(), game.getCurrentPitIndex(), MancalaConstants.emptyStone.getValue());
+        // simply sow all stones except the last one
+        for (int i = 0; i < stones - 1; i++) {
+            sowRight(game);
+        }
+        // simply sow the last stone
+        sowLastStone(game);
+        checkWinner(game);
+    }
+
+    //sow the game one pit to the right
+    private void sowRight(GameEntity game) {
 
         int currentPitIndex = game.getCurrentPitIndex() % MancalaConstants.rightPitHouseId.getValue() + 1;
 
-        String playerTurn = game.getPlayerTurn();
-
-        if ((currentPitIndex == MancalaConstants.rightPitHouseId.getValue() && playerTurn.equals(game.getSecondPlayer().getUserName())) ||
-                (currentPitIndex == MancalaConstants.leftPitHouseId.getValue() && playerTurn.equals(game.getFirstPlayer().getUserName()))) {
+        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == MancalaConstants.rightPitHouseId.getValue())
+                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == MancalaConstants.leftPitHouseId.getValue()) {
             currentPitIndex = currentPitIndex % MancalaConstants.rightPitHouseId.getValue() + 1;
         }
-
-
         game.setCurrentPitIndex(currentPitIndex);
-
-
         int targetStones = boardService.getStones(game.getBoard(), currentPitIndex);
-        if (!lastStone || currentPitIndex == MancalaConstants.rightPitHouseId.getValue() || currentPitIndex == MancalaConstants.rightPitHouseId.getValue()) {
-            boardService.setStones(game.getBoard(), currentPitIndex, targetStones + 1);
-            return;
+        boardService.setStones(game.getBoard(), currentPitIndex, targetStones + 1);
+    }
+
+    private void sowLastStone(GameEntity game) {
+        int currentPitIndex = game.getCurrentPitIndex() % MancalaConstants.rightPitHouseId.getValue() + 1;
+
+        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == MancalaConstants.rightPitHouseId.getValue())
+                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == MancalaConstants.leftPitHouseId.getValue()) {
+            currentPitIndex = currentPitIndex % MancalaConstants.rightPitHouseId.getValue() + 1;
         }
-
-        // It's the last stone and we need to check the opposite player's pit status
-//        KalahaPit oppositePit = game.getPit(MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
-        int oppositeStones = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
-
-        // we are sowing the last stone and the current player's pit is empty but the opposite pit is not empty, therefore,
-        // we collect the opposite's Pit stones plus the last stone and add them to the House Pit of current player and
-        // make the opposite Pit empty
-        if (targetStones == 0 && oppositeStones != 0) {
-            boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex, 0);
-
-            int pitHouseIndex = currentPitIndex < MancalaConstants.leftPitHouseId.getValue() ? MancalaConstants.leftPitHouseId.getValue() : MancalaConstants.rightPitHouseId.getValue();
-            int pitHouseStones = boardService.getStones(game.getBoard(), pitHouseIndex);
-            boardService.setStones(game.getBoard(), pitHouseIndex, pitHouseStones + oppositeStones + 1);
-            return;
+        game.setCurrentPitIndex(currentPitIndex);
+        int targetStones = boardService.getStones(game.getBoard(), currentPitIndex);
+//
+//        // we are sowing the last stone and the current player's pit is empty but the opposite pit is not empty, therefore,
+//        // we collect the opposite's Pit stones plus the last stone and add them to the House Pit of current player and
+//        // make the opposite Pit empty
+        if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex < MancalaConstants.leftPitHouseId.getValue()) {
+            // It's the last stone and we need to check the opposite player's pit status
+            int oppositeStone = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
+            if (targetStones == 0 && oppositeStone != 0) {
+                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex, MancalaConstants.emptyStone.getValue());
+                boardService.setStones(game.getBoard(), MancalaConstants.leftPitHouseId.getValue(), boardService.getStones(game.getBoard(), MancalaConstants.leftPitHouseId.getValue()) + oppositeStone + 1);
+                return;
+            }
+        } else if (game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex > MancalaConstants.leftPitHouseId.getValue()) {
+            int oppositeStone = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
+            if (targetStones == 0 && oppositeStone != 0) {
+                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex, MancalaConstants.emptyStone.getValue());
+                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue(), boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue()) + oppositeStone + 1);
+                return;
+            }
         }
         boardService.setStones(game.getBoard(), currentPitIndex, targetStones + 1);
+    }
+
+    private void checkWinner(GameEntity game) {
+        BoardEntity board = game.getBoard();
+        Integer firstPlayerStones = board.getFirstPitPlayerA() + board.getSecondPitPlayerA() + board.getThirdPitPlayerA()
+                + board.getForthPitPlayerA() + board.getFifthPitPlayerA() + board.getSixthPitPlayerA();
+
+        Integer secondPlayerStones = board.getFirstPitPlayerB() + board.getSecondPitPlayerB() + board.getThirdPitPlayerB()
+                + board.getForthPitPlayerB() + board.getFifthPitPlayerB() + board.getSixthPitPlayerB();
+
+        if (firstPlayerStones.equals(0)) {
+            if (secondPlayerStones + board.getRightPitHouseId() > board.getLeftPitHouseId())
+                game.setWinner(game.getSecondPlayer().getUserName());
+            else
+                game.setWinner(game.getFirstPlayer().getUserName());
+
+        } else if (secondPlayerStones.equals(0)) {
+            if (firstPlayerStones + board.getLeftPitHouseId() > board.getRightPitHouseId())
+                game.setWinner(game.getFirstPlayer().getUserName());
+            else
+                game.setWinner(game.getSecondPlayer().getUserName());
+        }
     }
 
     private String nextTurn(GameEntity game) {
