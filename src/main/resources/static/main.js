@@ -174,8 +174,8 @@ function setGame(game) {
     if (game?.winner) {
         alert(`The winner is ${game?.winner}`);
     } else {
-        setPlayerTurn(game?.playerTurn);
         setStates(game?.board);
+        setPlayerTurn(game?.playerTurn);
     }
 }
 
