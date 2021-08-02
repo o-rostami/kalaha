@@ -178,13 +178,14 @@ function setGame(game) {
         state.playerTwo = game.secondPlayer?.userName;
         $('.house.player-two .user-name').text(state.playerTwo).css('opacity', '1');
     }
-    state.playerTurn = game?.playerTurn;
+
     state.gamePlay.version = game?.version;
     state.gamePlay.id = game?.id;
     if (game?.winner) {
         alert(`The winner is ${game?.winner}`);
     } else {
-        this.setStates(game?.board)
+        setStates(game?.board);
+        setPlayerTurn(game?.playerTurn);
     }
 }
 
@@ -212,24 +213,34 @@ function quickReset() {
     $('.user-name').text('').css('opacity', '0');
 }
 
-$('#pits .cell').on('click', function () {
-    pitId = $(this).attr('id');
-    if (state.playerTurn === state.playerOne && pitId >= 1 && pitId <= 6) {
-        state.gamePlay.pitId = pitId;
-        playGame();
-    } else if (state.playerTurn === state.playerTwo && pitId >= 8 && pitId <= 13) {
-        state.gamePlay.pitId = pitId;
-        playGame();
-    } else {
-        alert('Please Wait! This is not your turn.')
-    }
-});
+function addOnClick(playerType) {
+    $(`.pits-row.${playerType} .cell`).on('click', function () {
+        pitId = $(this).attr('id');
+        if (state.playerTurn === state.playerOne && pitId >= 1 && pitId <= 6) {
+            state.gamePlay.pitId = pitId;
+            playGame();
+        } else if (state.playerTurn === state.playerTwo && pitId >= 8 && pitId <= 13) {
+            state.gamePlay.pitId = pitId;
+            playGame();
+        } else {
+            alert('Please Wait! This is not your turn.')
+        }
+    });
+}
 
-function togglePlayerTurn() {
-    if (state.playerTurn === state.playerOne) {
-        state.playerTurn = state.playerTwo;
-    } else if (state.playerTurn === state.playerTwo) {
-        state.playerTurn = state.playerOne;
+function setPlayerTurn(playerTurn) {
+    if (playerTurn) {
+        $('.cell').removeClass('not-allowed');
+        $('#pits .cell').off();
+        state.playerTurn = playerTurn;
+        if (state.playerTurn === state.playerOne) {
+            $('.player-two.cell').addClass('not-allowed');
+            addOnClick('player-one');
+        } else if (state.playerTurn === state.playerTwo) {
+            $('.player-one.cell').addClass('not-allowed');
+            addOnClick('player-two');
+        }
+        alert(`This is ${playerTurn}'s turn`)
     }
 }
 
