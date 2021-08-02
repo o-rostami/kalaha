@@ -221,7 +221,7 @@ function addOnClick(playerType) {
 
 function setPlayerTurn(playerTurn) {
     if (playerTurn) {
-        $('#playerTurn').css('opacity', '1').text(`playerTurn: ${gameId}`);
+        $('#playerTurn').css('opacity', '1').text(`playerTurn: ${playerTurn}`);
         $('.cell').removeClass('not-allowed');
         $('#pits .cell').off();
         state.playerTurn = playerTurn;
