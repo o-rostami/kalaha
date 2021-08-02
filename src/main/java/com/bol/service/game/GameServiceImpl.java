@@ -41,8 +41,6 @@ public class GameServiceImpl implements GameService {
         game.setFirstPlayer(firstPlayer);
         game.setStatus(GameStatus.NEW);
         game.setDifficultyLevel(difficultyLevel);
-        game.setPlayerTurn(firstPlayer.getUserName());
-
         return repository.save(game);
     }
 
@@ -61,7 +59,7 @@ public class GameServiceImpl implements GameService {
 
         game.setSecondPlayer(secondPlayer);
         game.setStatus(GameStatus.IN_PROGRESS);
-//        game.setPlayerTurn(selectTurn(game));
+        game.setPlayerTurn(selectTurn(game));
         return repository.save(game);
     }
 
@@ -100,7 +98,7 @@ public class GameServiceImpl implements GameService {
         }
         game.setStatus(GameStatus.IN_PROGRESS);
         game.setSecondPlayer(secondPlayer);
-//        game.setPlayerTurn(selectTurn(game));
+        game.setPlayerTurn(selectTurn(game));
         return repository.save(game);
     }
 
@@ -125,10 +123,10 @@ public class GameServiceImpl implements GameService {
         // simply sow the last stone
         sowRight(game, true);
 
-        int currentPitIndex = game.getCurrentPitIndex();
 
         // we switch the turn if the last sow was not on any of pit houses (left or right)
-        if (currentPitIndex != MancalaConstants.rightPitHouseId.getValue() && currentPitIndex != MancalaConstants.leftPitHouseId.getValue()) {
+        if (!game.getCurrentPitIndex().equals(MancalaConstants.rightPitHouseId.getValue())
+                && !game.getCurrentPitIndex().equals(MancalaConstants.leftPitHouseId.getValue())) {
             game.setPlayerTurn(nextTurn(game));
         }
 
@@ -163,13 +161,15 @@ public class GameServiceImpl implements GameService {
 
     //     sow the game one pit to the right
     private void sowRight(GameEntity game, Boolean lastStone) {
+
         int currentPitIndex = game.getCurrentPitIndex() % MancalaConstants.rightPitHouseId.getValue() + 1;
 
         String playerTurn = game.getPlayerTurn();
 
         if ((currentPitIndex == MancalaConstants.rightPitHouseId.getValue() && playerTurn.equals(game.getSecondPlayer().getUserName())) ||
-                (currentPitIndex == MancalaConstants.leftPitHouseId.getValue() && playerTurn.equals(game.getFirstPlayer().getUserName())))
-            currentPitIndex = currentPitIndex;/* % MancalaConstants.rightPitHouseId.getValue() + 1*/
+                (currentPitIndex == MancalaConstants.leftPitHouseId.getValue() && playerTurn.equals(game.getFirstPlayer().getUserName()))) {
+            currentPitIndex = currentPitIndex % MancalaConstants.rightPitHouseId.getValue() + 1;
+        }
 
 
         game.setCurrentPitIndex(currentPitIndex);

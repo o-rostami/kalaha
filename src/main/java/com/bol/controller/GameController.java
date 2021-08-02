@@ -60,11 +60,16 @@ public class GameController {
                 Objects.isNull(gameConnectDto.getSecondPlayer()) ||
                 Objects.isNull(gameConnectDto.getSecondPlayer().getId()))
             throw new NotNullException("SECOND.PLAYER.ID.IS.NULL", "SecondPlayer");
-
-        return gameMapper.entityToDto(service.connect(
+        GameEntity game = service.connect(
                 playerMapper.dtoToEntity(gameConnectDto.getSecondPlayer()),
-                gameConnectDto.getId()
-        ));
+                gameConnectDto.getId());
+        GameDto gameDto = gameMapper.entityToDto(game);
+        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
+        return gameDto;
+//        return gameMapper.entityToDto(service.connect(
+//                playerMapper.dtoToEntity(gameConnectDto.getSecondPlayer()),
+//                gameConnectDto.getId()
+//        ));
     }
 
     @PostMapping("/connect/random")
@@ -73,9 +78,15 @@ public class GameController {
             response = GameDto.class,
             httpMethod = "POST")
     public GameDto connectToRandomGame(@RequestBody PlayerDto player) {
-        return gameMapper.entityToDto(service.connectToRandomGame(
-                playerMapper.dtoToEntity(player)
-        ));
+        GameEntity game = service.connectToRandomGame(playerMapper.dtoToEntity(player));
+        GameDto gameDto = gameMapper.entityToDto(game);
+        simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
+
+        return gameDto;
+//        return gameMapper.entityToDto(service.connectToRandomGame(
+//                playerMapper.dtoToEntity(player)
+//        ));
+
     }
 
     @PostMapping("/gameplay")
@@ -89,7 +100,7 @@ public class GameController {
         if (Objects.isNull(request.getPitId()))
             throw new NotNullException("PIT.ID.IS.NULL", "PitId");
         GameEntity game = service.gamePlay(request.getId(), request.getPitId());
-        GameDto gameDto=  gameMapper.entityToDto(game);
+        GameDto gameDto = gameMapper.entityToDto(game);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
         return gameDto;
     }
