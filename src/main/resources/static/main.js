@@ -133,9 +133,11 @@ function startGame(userName, playerId, gameMode, param) {
         crossOrigin: true,
         data: JSON.stringify(data),
         success: function (game) {
+            if (gameMode === GameModes.new) {
+                alert(`Game id is ${game?.id}.`);
+            }
             setGame(game);
             connectToSocket(game?.id);
-            alert(`Game id is ${game?.id}.`);
         },
         error: function (error) {
             console.log(error);
@@ -144,17 +146,17 @@ function startGame(userName, playerId, gameMode, param) {
 }
 
 function connectToSocket(gameId) {
-    console.log("connecting to the game");
-    let socket = new SockJS(url + "/gameplay");
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log("connected to the frame: " + frame);
-        stompClient.subscribe("/topic/game-progress/" + gameId, function (response) {
-            let data = JSON.parse(response.body);
-            console.log(data);
-            setGame(data);
+    if (gameId) {
+        $('#gameId').css('opacity', '1').text(`gameId: ${gameId}`);
+        const socket = new SockJS(url + "/gameplay");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            stompClient.subscribe("/topic/game-progress/" + gameId, function (response) {
+                let data = JSON.parse(response.body);
+                setGame(data);
+            })
         })
-    })
+    }
 }
 
 function setGame(game) {
@@ -172,8 +174,8 @@ function setGame(game) {
     if (game?.winner) {
         alert(`The winner is ${game?.winner}`);
     } else {
-        setStates(game?.board);
         setPlayerTurn(game?.playerTurn);
+        setStates(game?.board);
     }
 }
 
@@ -199,6 +201,7 @@ function quickReset() {
     $('.cell .state').text('');
     $('.stone').remove();
     $('.user-name').text('').css('opacity', '0');
+    $('.status').text('').css('opacity', '0');
 }
 
 function addOnClick(playerType) {
@@ -218,14 +221,15 @@ function addOnClick(playerType) {
 
 function setPlayerTurn(playerTurn) {
     if (playerTurn) {
+        $('#playerTurn').css('opacity', '1').text(`playerTurn: ${gameId}`);
         $('.cell').removeClass('not-allowed');
         $('#pits .cell').off();
         state.playerTurn = playerTurn;
         if (state.playerTurn === state.playerOne) {
-            $('.player-two.cell').addClass('not-allowed');
+            $('.player-two .cell').addClass('not-allowed');
             addOnClick('player-one');
         } else if (state.playerTurn === state.playerTwo) {
-            $('.player-one.cell').addClass('not-allowed');
+            $('.player-one .cell').addClass('not-allowed');
             addOnClick('player-two');
         }
         alert(`This is ${playerTurn}'s turn`)
@@ -242,9 +246,6 @@ function playGame() {
         crossDomain: true,
         crossOrigin: true,
         data: JSON.stringify(state.gamePlay),
-        success: function (game) {
-            setGame(game);
-        },
         error: function (error) {
             console.log(error);
         }
