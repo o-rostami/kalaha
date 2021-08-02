@@ -53,6 +53,8 @@ public class BoardServiceImpl implements BoardService {
             return entity.getFifthPitPlayerA();
         } else if (pitId.equals(MancalaConstants.sixthPitPlayerA.getValue())) {
             return entity.getSixthPitPlayerA();
+        } else if (pitId.equals(MancalaConstants.leftPitHouseId.getValue())) {
+            return entity.getLeftPitHouseId();
         } else if (pitId.equals(MancalaConstants.firstPitPlayerB.getValue())) {
             return entity.getFirstPitPlayerB();
         } else if (pitId.equals(MancalaConstants.secondPitPlayerB.getValue())) {
@@ -65,6 +67,8 @@ public class BoardServiceImpl implements BoardService {
             return entity.getFifthPitPlayerB();
         } else if (pitId.equals(MancalaConstants.sixthPitPlayerB.getValue())) {
             return entity.getSixthPitPlayerB();
+        } else if (pitId.equals(MancalaConstants.rightPitHouseId.getValue())) {
+            return entity.getRightPitHouseId();
         }
         return 0;
     }

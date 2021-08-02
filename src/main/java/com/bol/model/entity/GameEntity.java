@@ -47,7 +47,6 @@ public class GameEntity extends BaseEntity<Long> {
     @Column(name = "PLAYER_TURN")
     private String playerTurn;
 
-    @Column(name = "CURRENT_PIT_INDEX")
     @Transient
     private Integer currentPitIndex;
 

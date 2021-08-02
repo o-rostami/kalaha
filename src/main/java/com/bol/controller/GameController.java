@@ -78,10 +78,6 @@ public class GameController {
         ));
     }
 
-//    @PostMapping("/gameplay")
-
-    //    @MessageMapping("/gameplay")
-//    @SendTo("/gameplay/messages")
     @PostMapping("/gameplay")
     @ApiOperation(value = "Endpoint for sowing the stones",
             produces = MediaType.APPLICATION_JSON_VALUE,

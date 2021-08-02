@@ -134,7 +134,6 @@ function startGame(userName, playerId, gameMode, param) {
         data: JSON.stringify(data),
         success: function (game) {
             setGame(game);
-            // TODO:
             connectToSocket(game?.id);
             alert(`Game id is ${game?.id}.`);
         },
@@ -145,15 +144,6 @@ function startGame(userName, playerId, gameMode, param) {
 }
 
 function connectToSocket(gameId) {
-    // let socket = new SockJS(`/game-messaging`);
-    // stompClient = Stomp.over(socket);
-    // stompClient.connect({}, function (frame) {
-    //     console.log('connected to the frame: ' + frame);
-    //     stompClient.subscribe(`/gameplay/messages`, function (res) {
-    //         const data = JSON.parse(res.body);
-    //         setGame(data);
-    //     })
-    // })
     console.log("connecting to the game");
     let socket = new SockJS(url + "/gameplay");
     stompClient = Stomp.over(socket);
@@ -165,8 +155,6 @@ function connectToSocket(gameId) {
             setGame(data);
         })
     })
-
-
 }
 
 function setGame(game) {
@@ -255,7 +243,7 @@ function playGame() {
         crossOrigin: true,
         data: JSON.stringify(state.gamePlay),
         success: function (game) {
-           setGame(game);
+            setGame(game);
         },
         error: function (error) {
             console.log(error);

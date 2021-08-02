@@ -41,6 +41,8 @@ public class GameServiceImpl implements GameService {
         game.setFirstPlayer(firstPlayer);
         game.setStatus(GameStatus.NEW);
         game.setDifficultyLevel(difficultyLevel);
+        game.setPlayerTurn(firstPlayer.getUserName());
+
         return repository.save(game);
     }
 
@@ -59,7 +61,7 @@ public class GameServiceImpl implements GameService {
 
         game.setSecondPlayer(secondPlayer);
         game.setStatus(GameStatus.IN_PROGRESS);
-        game.setPlayerTurn(selectTurn(game));
+//        game.setPlayerTurn(selectTurn(game));
         return repository.save(game);
     }
 
@@ -71,7 +73,6 @@ public class GameServiceImpl implements GameService {
             return game.getSecondPlayer().getUserName();
         }
     }
-
 
     @Override
     public GameEntity getGameById(Long gameId) {
@@ -99,7 +100,7 @@ public class GameServiceImpl implements GameService {
         }
         game.setStatus(GameStatus.IN_PROGRESS);
         game.setSecondPlayer(secondPlayer);
-        game.setPlayerTurn(selectTurn(game));
+//        game.setPlayerTurn(selectTurn(game));
         return repository.save(game);
     }
 
@@ -107,6 +108,34 @@ public class GameServiceImpl implements GameService {
     @Transactional
     public GameEntity gamePlay(Long gameId, Integer pitId) {
         GameEntity game = getGameById(gameId);
+        // validate the moving condition based on the pit id
+        sowValidation(game, pitId);
+
+        int stones = boardService.getStones(game.getBoard(), pitId);
+        boardService.setStones(game.getBoard(), pitId, MancalaConstants.emptyStone.getValue());
+
+        // keep the pit index, used for sowing the stones in right pits
+        game.setCurrentPitIndex(pitId);
+
+        // simply sow all stones except the last one
+        for (int i = 0; i < stones - 1; i++) {
+            sowRight(game, false);
+        }
+
+        // simply sow the last stone
+        sowRight(game, true);
+
+        int currentPitIndex = game.getCurrentPitIndex();
+
+        // we switch the turn if the last sow was not on any of pit houses (left or right)
+        if (currentPitIndex != MancalaConstants.rightPitHouseId.getValue() && currentPitIndex != MancalaConstants.leftPitHouseId.getValue()) {
+            game.setPlayerTurn(nextTurn(game));
+        }
+
+        return game;
+    }
+
+    private void sowValidation(GameEntity game, Integer pitId) {
 
         if (game.getStatus().equals(GameStatus.FINISHED)) {
             throw new BusinessException("Game.IS.FINISHED");
@@ -120,35 +149,16 @@ public class GameServiceImpl implements GameService {
         // we need to check if request comes from the right player otherwise we do not sow the game. In other words,
         // we keep the turn for the correct player
         if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && pitId > MancalaConstants.leftPitHouseId.getValue() ||
-                game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && pitId < MancalaConstants.leftPitHouseId.getValue())
+                game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && pitId < MancalaConstants.leftPitHouseId.getValue()) {
             throw new BusinessException("PIT.NUMBER.CHOSEN.WRONGLY");
+        }
 
         int stones = boardService.getStones(game.getBoard(), pitId);
 
         // No movement for empty Pits
-        if (stones == MancalaConstants.emptyStone.getValue())
+        if (stones == MancalaConstants.emptyStone.getValue()) {
             throw new BusinessException("PIT.NUMBER.CHOSEN.WRONGLY");
-
-        boardService.setStones(game.getBoard(), pitId, MancalaConstants.emptyStone.getValue());
-
-        // keep the pit index, used for sowing the stones in right pits
-        game.setCurrentPitIndex(pitId);
-
-        // simply sow all stones except the last one
-        for (int i = 0; i < stones - 1; i++) {
-            sowRight(game, false);
         }
-
-        // simply the last stone
-        sowRight(game, true);
-
-        int currentPitIndex = game.getCurrentPitIndex();
-
-        // we switch the turn if the last sow was not on any of pit houses (left or right)
-        if (currentPitIndex != MancalaConstants.rightPitHouseId.getValue() && currentPitIndex != MancalaConstants.leftPitHouseId.getValue())
-            game.setPlayerTurn(nextTurn(game));
-
-        return game;
     }
 
     //     sow the game one pit to the right
@@ -157,9 +167,10 @@ public class GameServiceImpl implements GameService {
 
         String playerTurn = game.getPlayerTurn();
 
-        if ((currentPitIndex == MancalaConstants.rightPitHouseId.getValue() && playerTurn == game.getSecondPlayer().getUserName()) ||
-                (currentPitIndex == MancalaConstants.leftPitHouseId.getValue() && playerTurn == game.getFirstPlayer().getUserName()))
-            currentPitIndex = currentPitIndex;/* % MancalaConstants.rightPitHouseId.getValue() + 1*/;
+        if ((currentPitIndex == MancalaConstants.rightPitHouseId.getValue() && playerTurn.equals(game.getSecondPlayer().getUserName())) ||
+                (currentPitIndex == MancalaConstants.leftPitHouseId.getValue() && playerTurn.equals(game.getFirstPlayer().getUserName())))
+            currentPitIndex = currentPitIndex;/* % MancalaConstants.rightPitHouseId.getValue() + 1*/
+
 
         game.setCurrentPitIndex(currentPitIndex);
 
