@@ -24,6 +24,7 @@ public interface GameService {
      * @throws IndexOutOfBoundsException if the index is out of range
      *                                   (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
+
     GameEntity createGame(PlayerEntity player, DifficultyLevel difficultyLevel);
 
     GameEntity connect(PlayerEntity player, Long gameId);
