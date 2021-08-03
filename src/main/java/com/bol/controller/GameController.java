@@ -1,5 +1,6 @@
 package com.bol.controller;
 
+import com.bol.config.SwaggerConfig;
 import com.bol.exception.NotNullException;
 import com.bol.model.dto.*;
 import com.bol.model.entity.GameEntity;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/game1")
-@Api(value = "Mancala game API. Set of endpoints for Creating and Sowing the Game")
+@Api(tags = {SwaggerConfig.GAME_CONTROLLER_TAG})
 @AllArgsConstructor
 public class GameController {
 

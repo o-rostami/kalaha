@@ -1,5 +1,6 @@
 package com.bol.controller;
 
+import com.bol.config.SwaggerConfig;
 import com.bol.model.dto.PlayerDto;
 import com.bol.model.mapper.PlayerMapper;
 import com.bol.service.player.PlayerService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/player")
-@Api(value = "Player game API. Set of endpoints for Creating and Updating the Players")
+@Api(tags = {SwaggerConfig.PLAYER_CONTROLLER_TAG})
 @AllArgsConstructor
 public class PlayerController {
 
@@ -24,7 +25,7 @@ public class PlayerController {
     @ApiOperation(value = "Endpoint for creating the player",
             produces = MediaType.APPLICATION_JSON_VALUE,
             response = Long.class,
-            httpMethod = "POST")
+            httpMethod =  "POST")
     public Long createPlayer(
             @RequestBody PlayerDto playerDto) {
         return service.createPlayer(playerDto);
