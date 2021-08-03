@@ -184,10 +184,10 @@ public class GameServiceImpl implements GameService {
         }
         game.setCurrentPitIndex(currentPitIndex);
         int targetStones = boardService.getStones(game.getBoard(), currentPitIndex);
-//
-//        // we are sowing the last stone and the current player's pit is empty but the opposite pit is not empty, therefore,
-//        // we collect the opposite's Pit stones plus the last stone and add them to the House Pit of current player and
-//        // make the opposite Pit empty
+
+       /* we are sowing the last stone and the current player's pit is empty but the opposite pit is not empty, therefore,
+        we collect the opposite's Pit stones plus the last stone and add them to the House Pit of current player and
+        make the opposite Pit empty*/
         if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex < MancalaConstants.leftPitHouseId.getValue()) {
             // It's the last stone and we need to check the opposite player's pit status
             int oppositeStone = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
@@ -216,16 +216,19 @@ public class GameServiceImpl implements GameService {
                 + board.getForthPitPlayerB() + board.getFifthPitPlayerB() + board.getSixthPitPlayerB();
 
         if (firstPlayerStones.equals(0)) {
-            if (secondPlayerStones + board.getRightPitHouseId() > board.getLeftPitHouseId())
+            if (secondPlayerStones + board.getRightPitHouseId() > board.getLeftPitHouseId()) {
                 game.setWinner(game.getSecondPlayer().getUserName());
-            else
+            } else {
                 game.setWinner(game.getFirstPlayer().getUserName());
-
+            }
+            game.setStatus(GameStatus.FINISHED);
         } else if (secondPlayerStones.equals(0)) {
-            if (firstPlayerStones + board.getLeftPitHouseId() > board.getRightPitHouseId())
+            if (firstPlayerStones + board.getLeftPitHouseId() > board.getRightPitHouseId()) {
                 game.setWinner(game.getFirstPlayer().getUserName());
-            else
+            } else {
                 game.setWinner(game.getSecondPlayer().getUserName());
+            }
+            game.setStatus(GameStatus.FINISHED);
         }
     }
 

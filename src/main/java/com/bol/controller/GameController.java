@@ -66,10 +66,6 @@ public class GameController {
         GameDto gameDto = gameMapper.entityToDto(game);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
         return gameDto;
-//        return gameMapper.entityToDto(service.connect(
-//                playerMapper.dtoToEntity(gameConnectDto.getSecondPlayer()),
-//                gameConnectDto.getId()
-//        ));
     }
 
     @PostMapping("/connect/random")
@@ -81,12 +77,7 @@ public class GameController {
         GameEntity game = service.connectToRandomGame(playerMapper.dtoToEntity(player));
         GameDto gameDto = gameMapper.entityToDto(game);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
-
         return gameDto;
-//        return gameMapper.entityToDto(service.connectToRandomGame(
-//                playerMapper.dtoToEntity(player)
-//        ));
-
     }
 
     @PostMapping("/gameplay")

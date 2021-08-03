@@ -106,8 +106,9 @@ function newPlayer(gameMode, param) {
                     startGame(userName, playerId, gameMode, param)
                 }
             },
-            error: function (error) {
-                console.log(error);
+            error: function (jqXHR) {
+                var responseText = jQuery.parseJSON(jqXHR.responseText);
+                alert('error: ' + responseText.detail);
             }
         })
     }
@@ -139,8 +140,9 @@ function startGame(userName, playerId, gameMode, param) {
             setGame(game);
             connectToSocket(game?.id);
         },
-        error: function (error) {
-            console.log(error);
+        error: function (jqXHR) {
+            var responseText = jQuery.parseJSON(jqXHR.responseText);
+            alert('error: ' + responseText.detail);
         }
     })
 }
@@ -246,8 +248,9 @@ function playGame() {
         crossDomain: true,
         crossOrigin: true,
         data: JSON.stringify(state.gamePlay),
-        error: function (error) {
-            console.log(error);
+        error: function (jqXHR) {
+            var responseText = jQuery.parseJSON(jqXHR.responseText);
+            alert('error: ' + responseText.detail);
         }
     })
 }
