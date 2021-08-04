@@ -1,4 +1,4 @@
-# Build docker
+# Build docker image
 just run this command in the `docker build -t kahala-app .`
 
 # Run docker image
