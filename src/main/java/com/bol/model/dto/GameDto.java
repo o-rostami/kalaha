@@ -10,7 +10,7 @@ public class GameDto extends BaseDto {
     private PlayerDto secondPlayer;
     private BoardDto board;
     private GameStatus status;
-    private Long winner;
+    private String winner;
     private String playerTurn;
 
 }

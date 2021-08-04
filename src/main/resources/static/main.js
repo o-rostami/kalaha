@@ -4,12 +4,6 @@ const DifficultyLevel = {
     hard: 'HARD',
 }
 
-const GameStatus = {
-    new: 'NEW',
-    inProgress: 'IN_PROGRESS',
-    hard: 'FINISHED',
-}
-
 const GameModes = {
     new: 'game1/create',
     connect: 'game1/connect',
@@ -175,6 +169,7 @@ function setGame(game) {
     state.gamePlay.id = game?.id;
     if (game?.winner) {
         alert(`The winner is ${game?.winner}`);
+        quickReset();
     } else {
         setStates(game?.board);
         setPlayerTurn(game?.playerTurn);
