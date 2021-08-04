@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GameControllerTest {
+ class GameControllerTest {
 
     private static PlayerEntity firstPlayer;
     private static PlayerEntity secondPlayer;
@@ -86,7 +86,7 @@ public class GameControllerTest {
 
     @Test
     @Order(1)
-    public void createRecord_success() throws Exception {
+     void createRecord_success() throws Exception {
         gameEntity.setStatus(GameStatus.NEW);
         Mockito.when(gameService.createGame(firstPlayer, DifficultyLevel.EASY)).thenReturn(gameEntity);
 
@@ -105,7 +105,7 @@ public class GameControllerTest {
 
     @Test
     @Order(2)
-    public void connectGame_success() throws Exception {
+     void connectGame_success() throws Exception {
         gameEntity.setStatus(GameStatus.IN_PROGRESS);
         Mockito.when(gameService.connect(secondPlayer, 1L)).thenReturn(gameEntity);
 
@@ -123,7 +123,7 @@ public class GameControllerTest {
 
     @Test
     @Order(3)
-    public void connectToRandomGame_success() throws Exception {
+     void connectToRandomGame_success() throws Exception {
         gameEntity.setStatus(GameStatus.IN_PROGRESS);
         Mockito.when(gameService.connectToRandomGame(secondPlayer)).thenReturn(gameEntity);
 
@@ -142,7 +142,7 @@ public class GameControllerTest {
 
     @Test
     @Order(4)
-    public void gamePlay_success() throws Exception {
+     void gamePlay_success() throws Exception {
         gameEntity.setStatus(GameStatus.IN_PROGRESS);
         gameEntity.getBoard().setFirstPitPlayerA(0);
         Mockito.when(gameService.gamePlay(1L, 1)).thenReturn(gameEntity);
