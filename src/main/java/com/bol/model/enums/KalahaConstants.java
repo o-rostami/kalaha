@@ -2,7 +2,7 @@ package com.bol.model.enums;
 
 import java.util.Arrays;
 
-public enum MancalaConstants {
+public enum KalahaConstants {
     emptyStone(0),
     firstPitPlayerA(1),
     secondPitPlayerA(2),
@@ -22,7 +22,7 @@ public enum MancalaConstants {
 
     private final Integer value;
 
-    MancalaConstants(Integer value) {
+    KalahaConstants(Integer value) {
         this.value = value;
     }
 
@@ -30,7 +30,7 @@ public enum MancalaConstants {
         return this.value;
     }
 
-    public static MancalaConstants findByValue(final Integer abbr) {
+    public static KalahaConstants findByValue(final Integer abbr) {
         return Arrays.stream(values()).filter(value -> value.getValue().equals(abbr)).findFirst().orElse(null);
     }
 

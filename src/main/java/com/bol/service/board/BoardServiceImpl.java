@@ -2,7 +2,7 @@ package com.bol.service.board;
 
 import com.bol.model.entity.BoardEntity;
 import com.bol.model.enums.DifficultyLevel;
-import com.bol.model.enums.MancalaConstants;
+import com.bol.model.enums.KalahaConstants;
 import com.bol.repository.BoardRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,33 +41,33 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Integer getStones(BoardEntity entity, Integer pitId) {
 
-        if (pitId.equals(MancalaConstants.firstPitPlayerA.getValue())) {
+        if (pitId.equals(KalahaConstants.firstPitPlayerA.getValue())) {
             return entity.getFirstPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.secondPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.secondPitPlayerA.getValue())) {
             return entity.getSecondPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.thirdPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.thirdPitPlayerA.getValue())) {
             return entity.getThirdPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.forthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.forthPitPlayerA.getValue())) {
             return entity.getForthPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.fifthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.fifthPitPlayerA.getValue())) {
             return entity.getFifthPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.sixthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.sixthPitPlayerA.getValue())) {
             return entity.getSixthPitPlayerA();
-        } else if (pitId.equals(MancalaConstants.leftPitHouseId.getValue())) {
+        } else if (pitId.equals(KalahaConstants.leftPitHouseId.getValue())) {
             return entity.getLeftPitHouseId();
-        } else if (pitId.equals(MancalaConstants.firstPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.firstPitPlayerB.getValue())) {
             return entity.getFirstPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.secondPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.secondPitPlayerB.getValue())) {
             return entity.getSecondPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.thirdPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.thirdPitPlayerB.getValue())) {
             return entity.getThirdPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.forthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.forthPitPlayerB.getValue())) {
             return entity.getForthPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.fifthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.fifthPitPlayerB.getValue())) {
             return entity.getFifthPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.sixthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.sixthPitPlayerB.getValue())) {
             return entity.getSixthPitPlayerB();
-        } else if (pitId.equals(MancalaConstants.rightPitHouseId.getValue())) {
+        } else if (pitId.equals(KalahaConstants.rightPitHouseId.getValue())) {
             return entity.getRightPitHouseId();
         }
         return 0;
@@ -76,33 +76,33 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void setStones(BoardEntity entity, Integer pitId, Integer value) {
 
-        if (pitId.equals(MancalaConstants.firstPitPlayerA.getValue())) {
+        if (pitId.equals(KalahaConstants.firstPitPlayerA.getValue())) {
             entity.setFirstPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.secondPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.secondPitPlayerA.getValue())) {
             entity.setSecondPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.thirdPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.thirdPitPlayerA.getValue())) {
             entity.setThirdPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.forthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.forthPitPlayerA.getValue())) {
             entity.setForthPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.fifthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.fifthPitPlayerA.getValue())) {
             entity.setFifthPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.sixthPitPlayerA.getValue())) {
+        } else if (pitId.equals(KalahaConstants.sixthPitPlayerA.getValue())) {
             entity.setSixthPitPlayerA(value);
-        } else if (pitId.equals(MancalaConstants.leftPitHouseId.getValue())) {
+        } else if (pitId.equals(KalahaConstants.leftPitHouseId.getValue())) {
             entity.setLeftPitHouseId(value);
-        } else if (pitId.equals(MancalaConstants.firstPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.firstPitPlayerB.getValue())) {
             entity.setFirstPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.secondPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.secondPitPlayerB.getValue())) {
             entity.setSecondPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.thirdPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.thirdPitPlayerB.getValue())) {
             entity.setThirdPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.forthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.forthPitPlayerB.getValue())) {
             entity.setForthPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.fifthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.fifthPitPlayerB.getValue())) {
             entity.setFifthPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.sixthPitPlayerB.getValue())) {
+        } else if (pitId.equals(KalahaConstants.sixthPitPlayerB.getValue())) {
             entity.setSixthPitPlayerB(value);
-        } else if (pitId.equals(MancalaConstants.rightPitHouseId.getValue())) {
+        } else if (pitId.equals(KalahaConstants.rightPitHouseId.getValue())) {
             entity.setRightPitHouseId(value);
         }
     }

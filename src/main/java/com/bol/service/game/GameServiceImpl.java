@@ -7,11 +7,11 @@ import com.bol.model.entity.GameEntity;
 import com.bol.model.entity.PlayerEntity;
 import com.bol.model.enums.DifficultyLevel;
 import com.bol.model.enums.GameStatus;
-import com.bol.model.enums.MancalaConstants;
+import com.bol.model.enums.KalahaConstants;
 import com.bol.repository.GameRepository;
 import com.bol.service.board.BoardService;
 import com.bol.service.player.PlayerService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +21,14 @@ import java.util.Random;
 
 
 @Service
-@AllArgsConstructor
 public class GameServiceImpl implements GameService {
 
-    private final GameRepository repository;
-    private final PlayerService playerService;
-    private final BoardService boardService;
-
+    @Autowired
+    private GameRepository repository;
+    @Autowired
+    private PlayerService playerService;
+    @Autowired
+    private BoardService boardService;
 
     @Override
     @Transactional
@@ -125,8 +126,8 @@ public class GameServiceImpl implements GameService {
         sow(game);
 
         // we switch the turn if the last sow was not on any of pit houses (left or right)
-        if (!game.getCurrentPitIndex().equals(MancalaConstants.rightPitHouseId.getValue())
-                && !game.getCurrentPitIndex().equals(MancalaConstants.leftPitHouseId.getValue())) {
+        if (!game.getCurrentPitIndex().equals(KalahaConstants.rightPitHouseId.getValue())
+                && !game.getCurrentPitIndex().equals(KalahaConstants.leftPitHouseId.getValue())) {
             game.setPlayerTurn(nextTurn(game));
         }
         return game;
@@ -140,28 +141,28 @@ public class GameServiceImpl implements GameService {
         }
 
         // No movement on House pits
-        if (pitId.equals(MancalaConstants.rightPitHouseId.getValue()) || pitId.equals(MancalaConstants.leftPitHouseId.getValue())) {
+        if (pitId.equals(KalahaConstants.rightPitHouseId.getValue()) || pitId.equals(KalahaConstants.leftPitHouseId.getValue())) {
             throw new BusinessException("PIT.NUMBER.CHOSEN.WRONGLY");
         }
 
         // we need to check if request comes from the right player otherwise we do not sow the game. In other words,
         // we keep the turn for the correct player
-        if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && pitId > MancalaConstants.leftPitHouseId.getValue() ||
-                game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && pitId < MancalaConstants.leftPitHouseId.getValue()) {
+        if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && pitId > KalahaConstants.leftPitHouseId.getValue() ||
+                game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && pitId < KalahaConstants.leftPitHouseId.getValue()) {
             throw new BusinessException("PIT.NUMBER.CHOSEN.WRONGLY");
         }
 
         int stones = boardService.getStones(game.getBoard(), pitId);
 
         // No movement for empty Pits
-        if (stones == MancalaConstants.emptyStone.getValue()) {
+        if (stones == KalahaConstants.emptyStone.getValue()) {
             throw new BusinessException("PIT.NUMBER.CHOSEN.WRONGLY");
         }
     }
 
     private void sow(GameEntity game) {
         int stones = boardService.getStones(game.getBoard(), game.getCurrentPitIndex());
-        boardService.setStones(game.getBoard(), game.getCurrentPitIndex(), MancalaConstants.emptyStone.getValue());
+        boardService.setStones(game.getBoard(), game.getCurrentPitIndex(), KalahaConstants.emptyStone.getValue());
 
         // simply sow all stones except the last one
         for (int i = 0; i < stones - 1; i++) {
@@ -176,11 +177,11 @@ public class GameServiceImpl implements GameService {
 
     private void sowRight(GameEntity game) {
 
-        int currentPitIndex = game.getCurrentPitIndex() % MancalaConstants.rightPitHouseId.getValue() + 1;
+        int currentPitIndex = game.getCurrentPitIndex() % KalahaConstants.rightPitHouseId.getValue() + 1;
 
-        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == MancalaConstants.rightPitHouseId.getValue())
-                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == MancalaConstants.leftPitHouseId.getValue()) {
-            currentPitIndex = currentPitIndex % MancalaConstants.rightPitHouseId.getValue() + 1;
+        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == KalahaConstants.rightPitHouseId.getValue())
+                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == KalahaConstants.leftPitHouseId.getValue()) {
+            currentPitIndex = currentPitIndex % KalahaConstants.rightPitHouseId.getValue() + 1;
         }
         game.setCurrentPitIndex(currentPitIndex);
         int targetStones = boardService.getStones(game.getBoard(), currentPitIndex);
@@ -188,11 +189,11 @@ public class GameServiceImpl implements GameService {
     }
 
     private void sowLastStone(GameEntity game) {
-        int currentPitIndex = game.getCurrentPitIndex() % MancalaConstants.rightPitHouseId.getValue() + 1;
+        int currentPitIndex = game.getCurrentPitIndex() % KalahaConstants.rightPitHouseId.getValue() + 1;
 
-        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == MancalaConstants.rightPitHouseId.getValue())
-                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == MancalaConstants.leftPitHouseId.getValue()) {
-            currentPitIndex = currentPitIndex % MancalaConstants.rightPitHouseId.getValue() + 1;
+        if ((game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex == KalahaConstants.rightPitHouseId.getValue())
+                || game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex == KalahaConstants.leftPitHouseId.getValue()) {
+            currentPitIndex = currentPitIndex % KalahaConstants.rightPitHouseId.getValue() + 1;
         }
         game.setCurrentPitIndex(currentPitIndex);
         int targetStones = boardService.getStones(game.getBoard(), currentPitIndex);
@@ -200,19 +201,19 @@ public class GameServiceImpl implements GameService {
        /* we are sowing the last stone and the current player's pit is empty but the opposite pit is not empty, therefore,
         we collect the opposite's Pit stones plus the last stone and add them to the House Pit of current player and
         make the opposite Pit empty*/
-        if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex < MancalaConstants.leftPitHouseId.getValue()) {
+        if (game.getPlayerTurn().equals(game.getFirstPlayer().getUserName()) && currentPitIndex < KalahaConstants.leftPitHouseId.getValue()) {
             // It's the last stone and we need to check the opposite player's pit status
-            int oppositeStone = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
+            int oppositeStone = boardService.getStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue() - currentPitIndex);
             if (targetStones == 0 && oppositeStone != 0) {
-                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex, MancalaConstants.emptyStone.getValue());
-                boardService.setStones(game.getBoard(), MancalaConstants.leftPitHouseId.getValue(), boardService.getStones(game.getBoard(), MancalaConstants.leftPitHouseId.getValue()) + oppositeStone + 1);
+                boardService.setStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue() - currentPitIndex, KalahaConstants.emptyStone.getValue());
+                boardService.setStones(game.getBoard(), KalahaConstants.leftPitHouseId.getValue(), boardService.getStones(game.getBoard(), KalahaConstants.leftPitHouseId.getValue()) + oppositeStone + 1);
                 return;
             }
-        } else if (game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex > MancalaConstants.leftPitHouseId.getValue()) {
-            int oppositeStone = boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex);
+        } else if (game.getPlayerTurn().equals(game.getSecondPlayer().getUserName()) && currentPitIndex > KalahaConstants.leftPitHouseId.getValue()) {
+            int oppositeStone = boardService.getStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue() - currentPitIndex);
             if (targetStones == 0 && oppositeStone != 0) {
-                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue() - currentPitIndex, MancalaConstants.emptyStone.getValue());
-                boardService.setStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue(), boardService.getStones(game.getBoard(), MancalaConstants.rightPitHouseId.getValue()) + oppositeStone + 1);
+                boardService.setStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue() - currentPitIndex, KalahaConstants.emptyStone.getValue());
+                boardService.setStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue(), boardService.getStones(game.getBoard(), KalahaConstants.rightPitHouseId.getValue()) + oppositeStone + 1);
                 return;
             }
         }
