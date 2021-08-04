@@ -5,9 +5,9 @@ const DifficultyLevel = {
 }
 
 const GameModes = {
-    new: 'game1/create',
-    connect: 'game1/connect',
-    random: 'game1/connect/random',
+    new: 'game/create',
+    connect: 'game/connect',
+    random: 'game/connect/random',
 }
 
 class Player {
@@ -235,7 +235,7 @@ function setPlayerTurn(playerTurn) {
 
 function playGame() {
     $.ajax({
-        url: `${url}/game1/gameplay`,
+        url: `${url}/game/gameplay`,
         type: 'POST',
         host: url,
         contentType: 'application/json',

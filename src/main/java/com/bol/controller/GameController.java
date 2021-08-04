@@ -9,7 +9,7 @@ import com.bol.model.mapper.PlayerMapper;
 import com.bol.service.game.GameService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,15 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/game1")
+@RequestMapping("/game")
 @Api(tags = {SwaggerConfig.GAME_CONTROLLER_TAG})
-@AllArgsConstructor
 public class GameController {
 
+    @Autowired
     private GameService service;
-    private final GameMapper gameMapper;
-    private final PlayerMapper playerMapper;
-    private final SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private GameMapper gameMapper;
+    @Autowired
+    private PlayerMapper playerMapper;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @PostMapping("/create")
     @ApiOperation(value = "Endpoint for creating the game",

@@ -1,23 +1,20 @@
 package com.bol.service.player;
 
 import com.bol.exception.NotFoundException;
-import com.bol.model.dto.PlayerDto;
 import com.bol.model.entity.PlayerEntity;
-import com.bol.model.mapper.PlayerMapper;
 import com.bol.repository.PlayerRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class PlayerServiceImpl implements PlayerService {
 
+    @Autowired
     private PlayerRepository repository;
-    private PlayerMapper mapper;
 
     @Override
-    public Long createPlayer(PlayerDto playerDto) {
-        return repository.save(mapper.dtoToEntity(playerDto)).getId();
+    public Long createPlayer(PlayerEntity playerEntity) {
+        return repository.save(playerEntity).getId();
     }
 
 

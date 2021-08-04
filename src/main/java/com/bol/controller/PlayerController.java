@@ -7,18 +7,19 @@ import com.bol.service.player.PlayerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/player")
 @Api(tags = {SwaggerConfig.PLAYER_CONTROLLER_TAG})
-@AllArgsConstructor
 public class PlayerController {
 
-    private final PlayerService service;
-    private final PlayerMapper mapper;
+    @Autowired
+    private PlayerService service;
+    @Autowired
+    private PlayerMapper mapper;
 
 
     @PostMapping
@@ -28,7 +29,8 @@ public class PlayerController {
             httpMethod = "POST")
     public Long createPlayer(
             @RequestBody PlayerDto playerDto) {
-        return service.createPlayer(playerDto);
+
+        return service.createPlayer(mapper.dtoToEntity(playerDto));
     }
 
 

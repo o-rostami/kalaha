@@ -1,6 +1,5 @@
 package com.bol.service.player;
 
-import com.bol.model.dto.PlayerDto;
 import com.bol.model.entity.PlayerEntity;
 
 /**
@@ -21,7 +20,7 @@ public interface PlayerService {
      * @return the player's id just created.
      */
 
-    Long createPlayer(PlayerDto playerDto);
+    Long createPlayer(PlayerEntity playerEntity);
 
 
     /**
