@@ -20,15 +20,6 @@ public class PlayerServiceImpl implements PlayerService {
         return repository.save(mapper.dtoToEntity(playerDto)).getId();
     }
 
-    @Override
-    public void updatePlayer(PlayerDto playerDto) {
-        repository.save(mapper.dtoToEntity(playerDto));
-    }
-
-    @Override
-    public void deletePlayer(Long playerId) {
-        repository.deleteById(playerId);
-    }
 
     @Override
     public PlayerEntity getById(Long playerId) {

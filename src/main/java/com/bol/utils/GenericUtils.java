@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 /**
  * using generic types in enum converter and treeRepository we need to set their exact type
+ *
+ * @author Omid Rostami
  */
 public final class GenericUtils {
     public static final int FIRST_INDEX = 0;

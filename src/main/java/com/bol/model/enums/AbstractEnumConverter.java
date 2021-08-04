@@ -1,7 +1,6 @@
 package com.bol.model.enums;
 
 
-
 import com.bol.utils.GenericUtils;
 
 import javax.persistence.AttributeConverter;
@@ -10,7 +9,9 @@ import java.util.Objects;
 
 
 /**
- * Hibernate generic converter to prevent write a converter for all enums
+ * Hibernate generic converter to prevent write a converter for all enums<p>
+ *
+ * @author Omid Rostami
  */
 
 public abstract class AbstractEnumConverter<T, E extends Enum<E> & PersistableEnum<T>> implements AttributeConverter<E, T> {

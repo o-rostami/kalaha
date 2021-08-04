@@ -6,6 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+/**
+ * A <i>ExceptionConfig</i>. This class has responsibility to config
+ * messages location of Exception which will be thrown. <p>
+ *
+ * @author Omid Rostami
+ */
+
+
 @Configuration
 public class ExceptionConfig {
 

@@ -105,7 +105,6 @@ public class BoardServiceImpl implements BoardService {
         } else if (pitId.equals(MancalaConstants.rightPitHouseId.getValue())) {
             entity.setRightPitHouseId(value);
         }
-
     }
 
 }
