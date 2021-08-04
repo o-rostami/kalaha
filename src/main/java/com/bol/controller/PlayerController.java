@@ -1,5 +1,6 @@
 package com.bol.controller;
 
+import com.bol.config.SwaggerConfig;
 import com.bol.model.dto.PlayerDto;
 import com.bol.model.mapper.PlayerMapper;
 import com.bol.service.player.PlayerService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/player")
-@Api(value = "Player game API. Set of endpoints for Creating and Updating the Players")
+@Api(tags = {SwaggerConfig.PLAYER_CONTROLLER_TAG})
 @AllArgsConstructor
 public class PlayerController {
 
@@ -30,26 +31,6 @@ public class PlayerController {
         return service.createPlayer(playerDto);
     }
 
-    @PutMapping
-    @ApiOperation(value = "Endpoint for updating the player",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            httpMethod = "PUT")
-    public void updatePlayer(
-            @RequestBody PlayerDto playerDto) {
-        service.updatePlayer(playerDto);
-    }
-
-
-    @DeleteMapping(value = "{id}")
-    @ApiOperation(value = "Endpoint for deleting the player",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            httpMethod = "DELETE")
-    public void deletePlayer(
-            @ApiParam(value = "The id of player created by calling createPlayer() method. It can't be empty or null",
-                    required = true)
-            @PathVariable(value = "id") Long playerId) {
-        service.deletePlayer(playerId);
-    }
 
     @GetMapping(value = "{id}")
     @ApiOperation(value = "Endpoint for returning the player",
@@ -61,6 +42,5 @@ public class PlayerController {
             @PathVariable(value = "id") Long playerId) {
         return mapper.entityToDto(service.getById(playerId));
     }
-
 
 }

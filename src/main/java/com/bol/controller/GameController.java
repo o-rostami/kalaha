@@ -1,5 +1,6 @@
 package com.bol.controller;
 
+import com.bol.config.SwaggerConfig;
 import com.bol.exception.NotNullException;
 import com.bol.model.dto.*;
 import com.bol.model.entity.GameEntity;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/game1")
-@Api(value = "Mancala game API. Set of endpoints for Creating and Sowing the Game")
+@Api(tags = {SwaggerConfig.GAME_CONTROLLER_TAG})
 @AllArgsConstructor
 public class GameController {
 
@@ -66,10 +67,6 @@ public class GameController {
         GameDto gameDto = gameMapper.entityToDto(game);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
         return gameDto;
-//        return gameMapper.entityToDto(service.connect(
-//                playerMapper.dtoToEntity(gameConnectDto.getSecondPlayer()),
-//                gameConnectDto.getId()
-//        ));
     }
 
     @PostMapping("/connect/random")
@@ -81,12 +78,7 @@ public class GameController {
         GameEntity game = service.connectToRandomGame(playerMapper.dtoToEntity(player));
         GameDto gameDto = gameMapper.entityToDto(game);
         simpMessagingTemplate.convertAndSend("/topic/game-progress/" + game.getId(), gameDto);
-
         return gameDto;
-//        return gameMapper.entityToDto(service.connectToRandomGame(
-//                playerMapper.dtoToEntity(player)
-//        ));
-
     }
 
     @PostMapping("/gameplay")

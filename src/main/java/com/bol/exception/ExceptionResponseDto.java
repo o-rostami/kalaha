@@ -4,7 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
+/**
+ * A<i>ExceptionResponseDto</i>.This model contains the details about thrown exception<p>
+ *
+ * @author Omid Rostami
+ */
+
 
 @Data
 @Builder

@@ -1,6 +1,7 @@
 package com.bol.model.entity;
 
 
+import com.bol.utils.SecurityUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
@@ -42,16 +43,16 @@ public abstract class BaseEntity<I extends Serializable> {
     @Column(name = "VERSION")
     protected Long version;
 
-//    @PrePersist
-//    private void touchForCreate() {
-//        setCreatedBy(SecurityUtils.getCurrentUserId());
-//        setCreatedDate(LocalDateTime.now());
-//    }
-//
-//    @PreUpdate
-//    private void touchForUpdate() {
-//        setLastModifiedBy(SecurityUtils.getCurrentUserId());
-//        setLastModifiedDate(LocalDateTime.now());
-//    }
+    @PrePersist
+    private void touchForCreate() {
+        setCreatedBy(SecurityUtils.getCurrentUserId());
+        setCreatedDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    private void touchForUpdate() {
+        setLastModifiedBy(SecurityUtils.getCurrentUserId());
+        setLastModifiedDate(LocalDateTime.now());
+    }
 
 }

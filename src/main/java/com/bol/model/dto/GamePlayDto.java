@@ -3,8 +3,8 @@ package com.bol.model.dto;
 import lombok.Data;
 
 @Data
-public class GamePlayDto extends BaseDto{
+public class GamePlayDto extends BaseDto {
 
-    private Integer PitId;
+    private Integer pitId;
 
 }

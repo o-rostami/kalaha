@@ -90,7 +90,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             status, WebRequest request) {
         log.error("/////////////////////// BAD_REQUEST Type Mismatch:  ///////////////////////", ex);
         return new ResponseEntity<>(
-               ExceptionResponseDto.builder()
+                ExceptionResponseDto.builder()
                         .type(TypeMismatchException.class.getSimpleName())
                         .status(status)
                         .instance(((ServletWebRequest) request).getRequest().getRequestURI())
@@ -152,7 +152,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             locale) {
         log.error("/////////////////////// BAD_REQUEST Constraint Violation Exception:  ///////////////////////", ex);
         return new ResponseEntity<>(
-               ExceptionResponseDto.builder()
+                ExceptionResponseDto.builder()
                         .type(ConstraintViolationException.class.getSimpleName())
                         .status(HttpStatus.BAD_REQUEST)
                         .instance(((ServletWebRequest) request).getRequest().getRequestURI())
@@ -195,38 +195,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 , HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    protected ResponseEntity<Object> handleException(BadCredentialsException ex, WebRequest request, Locale
-//            locale) {
-//        log.error("/////////////////////// UNAUTHORIZED Handle Exception:  ///////////////////////", ex);
-//        return new ResponseEntity<>(
-//                ExceptionResponseDto.builder()
-//                        .type(BadCredentialsException.class.getSimpleName())
-//                        .status(HttpStatus.UNAUTHORIZED)
-//                        .instance(((ServletWebRequest) request).getRequest().getRequestURI())
-//                        .title(new String[]{ex.getMessage()})
-//                        .detail(getMessage(ex, locale))
-//                        .build()
-//                , HttpStatus.UNAUTHORIZED);
-//    }
-
-    @ExceptionHandler(InvalidPasswordException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected ResponseEntity<Object> handleException(InvalidPasswordException ex, WebRequest request, Locale
-            locale) {
-        log.error("/////////////////////// UNAUTHORIZED Handle Exception:  ///////////////////////", ex);
-        return new ResponseEntity<>(
-                ExceptionResponseDto.builder()
-                        .type(InvalidPasswordException.class.getSimpleName())
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .instance(((ServletWebRequest) request).getRequest().getRequestURI())
-                        .title(new String[]{ex.getMessage()})
-                        .detail(getMessage(ex, locale))
-                        .build()
-                , HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
 
     private String getMessage(Exception ex, Locale locale) {
         if (Objects.nonNull(ex.getMessage())) {
@@ -241,7 +209,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             } catch (Exception e) {
                 return ex.getClass().getName();
             }
-
     }
 
 }
